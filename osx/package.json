@@ -1,0 +1,28 @@
+{
+  "name": "osx",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "fs-extra": "^6.0.1",
+    "jquery": "^3.3.1",
+    "materialize-css": "^1.0.0-rc.1",
+    "popper.js": "^1.14.3",
+    "react": "^16.3.2",
+    "react-dom": "^16.3.2",
+    "react-scripts": "1.1.4"
+  },
+  "main": "src/main.js",
+  "homepage": "./",
+  "scripts": {
+    "dev": "BROWSER=none react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject",
+    "electron": "electron .",
+    "start": "nf start"
+  },
+  "devDependencies": {
+    "electron": "^1.8.4",
+    "foreman": "^2.0.0"
+  }
+}
