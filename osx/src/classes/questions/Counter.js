@@ -10,20 +10,24 @@ export default class Checkbox extends React.Component {
     this.state = {
       value: 0
     };
-    this.handleUpClick = this.handleUpClick.bind(this);
-    this.handleDownClick = this.handleDownClick.bind(this);
   }
 
-  handleUpClick() {
-    this.setState((prevState) => {
-      return { count: prevState.value += this.props.option.increment }
-    });
+  save() {
+    let json = JSON.parse(fs.readFileSync(this.props.file, 'utf8'));
+    json[this.props.jsonKey][this.props.name] = this.state.value;
+    fs.writeFileSync(this.props.file, JSON.stringify(json));
   }
 
-  handleDownClick() {
-    this.setState((prevState) => {
-      return { count: prevState.value -= this.props.option.increment }
-    });
+  handleClick(bool) {
+    if (bool) {
+      this.setState((prevState) => {
+        return { count: prevState.value += this.props.option.increment }
+      }, () => this.save());
+    } else {
+      this.setState((prevState) => {
+        return { count: prevState.value -= this.props.option.increment }
+      }, () => this.save());
+    }
   }
 
   render() {
@@ -32,9 +36,9 @@ export default class Checkbox extends React.Component {
         <input className="special-input" value={this.state.value} readOnly />
         <br />
         <div className="special-btn-wrap">
-          <button className="btn waves-effect waves-light red" onClick={this.handleDownClick}>-{this.props.option.increment}</button>
+          <button className="btn waves-effect waves-light red" onClick={() => this.handleClick(false)}>-{this.props.option.increment}</button>
           <span>&nbsp;&nbsp;&nbsp;</span>
-          <button className="btn waves-effect waves-light green" onClick={this.handleUpClick}>+{this.props.option.increment}</button>
+          <button className="btn waves-effect waves-light green" onClick={() => this.handleClick(true)}>+{this.props.option.increment}</button>
         </div>
       </div>
     );

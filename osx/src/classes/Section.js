@@ -14,14 +14,13 @@ export default class Section extends React.Component {
     let index = 0;
     let rendered = [];
     let temp = [];
-    let scoreBar = null;
     for (let question in this.props.app) {
       if (this.props.app.hasOwnProperty(question)) {
         let name = Object.keys(this.props.app)[index];
         index++;
         jsx.push((
           <div key={name} className='col s4'>
-            <Question key={name} name={name} question={this.props.app[question]} />
+            <Question key={name} name={name} question={this.props.app[question]} file={this.props.file} jsonKey={this.props.name} />
           </div>
         ));
       }
@@ -42,22 +41,6 @@ export default class Section extends React.Component {
           <br />
           {rendered}
         </div>
-        <footer>
-          <div className="divider">-</div>
-          <br />
-          <div className="row">
-            <div className="col s2">
-              <button className="btn waves-effect waves-light" onClick={(i) => this.props.onBack(i)}>Back</button>
-            </div>
-            <div className="col s8">
-              {scoreBar}
-            </div>
-            <div className="col s2" style={{textAlign: 'right'}}>
-              <button className="btn waves-effect waves-light" onClick={(i) => this.props.onNext(i)}>Next</button>
-            </div>
-          </div>
-          <br />
-        </footer>
       </div>
     );
   }

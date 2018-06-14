@@ -27,6 +27,9 @@ export default class Stopwatch extends React.Component {
 
   stop() {
     clearInterval(this.stopwatch);
+    let json = JSON.parse(fs.readFileSync(this.props.file, 'utf8'));
+    json[this.props.jsonKey][this.props.name] = parseFloat(this.state.time);
+    fs.writeFileSync(this.props.file, JSON.stringify(json));
   }
 
   render() {

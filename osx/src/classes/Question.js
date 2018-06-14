@@ -16,59 +16,36 @@ export default class Question extends React.Component {
   }
 
   question() {
-    this.questions = [];
-    this.index = 0;
-    this.type = this.props.question.type;
-    this.option = this.props.question.options;
-    switch (this.type) {
+    let questions;
+    let type = this.props.question.type;
+    let option = this.props.question.options;
+    switch (type) {
       case 'checkbox':
-        for (let question in this.option) {
-          if (this.option.hasOwnProperty(question)) {
-            this.questions.push(
-              <Checkbox key={`${this.props.name.toLowerCase().replace(/[^\w\d]/g, '-')}-${this.index}`} name={this.props.name} option={this.option[question]} question={question} />
-            );
-            this.index++;
-          }
-        }
+        questions = <Checkbox name={this.props.name} option={option} file={this.props.file} jsonKey={this.props.jsonKey} />;
         break;
       case 'counter':
-        this.questions.push(
-          <Counter key={`${this.props.name.toLowerCase().replace(/[^\w\d]/g, '-')}-${this.index}`} name={this.props.name} option={this.option} />
-        );
+        questions = <Counter name={this.props.name} option={option} file={this.props.file} jsonKey={this.props.jsonKey} />;
         break;
       case 'input':
-        this.questions.push(
-          <Input key={`${this.props.name.toLowerCase().replace(/[^\w\d]/g, '-')}-${this.index}`} name={this.props.name} option={this.option} />
-        );
+        questions = <Input name={this.props.name} option={option} file={this.props.file} jsonKey={this.props.jsonKey} />;
         break;
       case 'radio':
-        for (let question in this.option) {
-          if (this.option.hasOwnProperty(question)) {
-            this.questions.push(
-              <Radio key={`${this.props.name.toLowerCase().replace(/[^\w\d]/g, '-')}-${this.index}`} name={this.props.name} option={this.option[question]} question={question} />
-            );
-            this.index++;
-          }
-        }
+        questions = <Radio name={this.props.name} option={option} file={this.props.file} jsonKey={this.props.jsonKey} />;
         break;
       case 'stopwatch':
-        this.questions.push(
-          <Stopwatch key={`${this.props.name.toLowerCase().replace(/[^\w\d]/g, '-')}-${this.index}`} name={this.props.name} option={this.option} />
-        );
+        questions = <Stopwatch name={this.props.name} option={option} file={this.props.file} jsonKey={this.props.jsonKey} />;
         break;
       case 'textarea':
-        this.questions.push(
-          <Textarea key={`${this.props.name.toLowerCase().replace(/[^\w\d]/g, '-')}-${this.index}`} name={this.props.name} option={this.option} />
-        );
+        questions = <Textarea name={this.props.name} option={option} file={this.props.file} jsonKey={this.props.jsonKey} />;
         break;
     }
-    return this.questions;
+    return questions;
   }
 
   render() {
     return (
       <div className="question question-container">
-        <h3 className="question-name">{this.props.name}</h3>
+        <h4 className="question-name">{this.props.name}</h4>
         {this.question()}
       </div>
     );
