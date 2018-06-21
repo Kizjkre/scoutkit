@@ -1,7 +1,7 @@
 import React from 'react';
-import './../../index.css';
-import './../../../node_modules/materialize-css/dist/css/materialize.min.css';
-import './../../../node_modules/materialize-css/dist/js/materialize.min';
+import '../../index.css';
+import '../../../node_modules/materialize-css/dist/css/materialize.min.css';
+import '../../../node_modules/materialize-css/dist/js/materialize.min';
 const fs = window.require('fs-extra');
 
 export default class Checkbox extends React.Component {
@@ -29,10 +29,10 @@ export default class Checkbox extends React.Component {
       if (this.props.option.hasOwnProperty(question)) {
         let name = Object.keys(this.props.option)[index];
         jsx.push(
-          <p key={name.toLowerCase().replace(/[^\w\d]/g, '-')}>
+          <p key={ name.toLowerCase().replace(/[^\w\d]/g, '-') }>
             <label>
-              <input type="checkbox" id={name.toLowerCase().replace(/[^\w\d]/g, '-')} onClick={() => this.handleClick(name)} />
-              <span>{name}</span>
+              <input type="checkbox" id={ name.toLowerCase().replace(/[^\w\d]/g, '-') } onClick={ () => this.handleClick(name) } />
+              <span>{ name }</span>
             </label>
           </p>
         );

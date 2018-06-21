@@ -1,28 +1,42 @@
 {
-  "name": "osx",
+  "name": "ScoutKit",
   "version": "0.1.0",
+  "main": "public/electron.js",
+  "author": "Tristan Peng",
   "private": true,
+  "description": "The One-Stop Shop for Everything Companal",
   "dependencies": {
-    "fs-extra": "^6.0.1",
+    "electron-is-dev": "^0.3.0",
     "jquery": "^3.3.1",
     "materialize-css": "^1.0.0-rc.1",
-    "popper.js": "^1.14.3",
-    "react": "^16.3.2",
-    "react-dom": "^16.3.2",
+    "react": "^16.4.1",
+    "react-dom": "^16.4.1",
     "react-scripts": "1.1.4"
   },
-  "main": "src/main.js",
   "homepage": "./",
   "scripts": {
-    "dev": "BROWSER=none react-scripts start",
+    "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "electron": "electron .",
-    "start": "nf start"
+    "electron-dev": "concurrently \"BROWSER=none yarn start\" \"wait-on http://localhost:3000 && electron .\"",
+    "electron-pack": "build -c.extraMetadata.main=build/electron.js",
+    "preelectron-pack": "yarn build"
   },
   "devDependencies": {
-    "electron": "^1.8.4",
-    "foreman": "^2.0.0"
+    "concurrently": "^3.5.1",
+    "electron": "^2.0.2",
+    "electron-builder": "^20.15.1",
+    "wait-on": "^2.1.0"
+  },
+  "build": {
+    "appId": "com.scoutkit.osx",
+    "files": [
+      "build/**/*",
+      "node_modules/**/*"
+    ],
+    "directories": {
+      "buildResources": "assets"
+    }
   }
 }

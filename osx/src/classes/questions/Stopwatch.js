@@ -1,7 +1,7 @@
 import React from 'react';
-import './../../index.css';
-import './../../../node_modules/materialize-css/dist/css/materialize.min.css';
-import './../../../node_modules/materialize-css/dist/js/materialize.min';
+import '../../index.css';
+import '../../../node_modules/materialize-css/dist/css/materialize.min.css';
+import '../../../node_modules/materialize-css/dist/js/materialize.min';
 const fs = window.require('fs-extra');
 
 export default class Stopwatch extends React.Component {
@@ -35,12 +35,12 @@ export default class Stopwatch extends React.Component {
   render() {
     return (
       <div>
-        <input className="special-input" value={this.state.time} readOnly />
+        <input className="special-input" value={ this.state.time } readOnly />
         <br />
         <div className="special-btn-wrap">
-          <button className="btn waves-effect waves-light red" onClick={this.stop}>Stop</button>
+          <button className="btn waves-effect waves-light red" onClick={ this.stop }>Stop</button>
           <span>&nbsp;&nbsp;&nbsp;</span>
-          <button className="btn waves-effect waves-light green" onClick={this.increment}>Start</button>
+          <button className="btn waves-effect waves-light green" onClick={ this.increment }>Start</button>
         </div>
       </div>
     );
