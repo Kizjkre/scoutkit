@@ -30,6 +30,9 @@ footer {
   margin: 0;
   text-align: center;
 }
+.modal-close {
+  font-size: 20pt;
+}
 .section {
   height: 100vh;
 }

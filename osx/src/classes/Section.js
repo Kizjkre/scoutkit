@@ -2,7 +2,7 @@ import React from 'react';
 import '../index.css';
 import '../../node_modules/materialize-css/dist/css/materialize.min.css';
 import '../../node_modules/materialize-css/dist/js/materialize.min';
-import Question from './Question';
+import Module from './Module';
 
 export default class Section extends React.Component {
   constructor(props) {
@@ -14,13 +14,13 @@ export default class Section extends React.Component {
     let index = 0;
     let rendered = [];
     let temp = [];
-    for (let question in this.props.app) {
-      if (this.props.app.hasOwnProperty(question)) {
+    for (let module in this.props.app) {
+      if (this.props.app.hasOwnProperty(module)) {
         let name = Object.keys(this.props.app)[index];
         index++;
         jsx.push((
           <div key={ name } className='col s4'>
-            <Question key={ name } name={ name } question={ this.props.app[question] } file={ this.props.file } jsonKey={ this.props.name } />
+            <Module key={ name } name={ name } module={ this.props.app[module] } file={ this.props.file } jsonKey={ this.props.name } />
           </div>
         ));
       }
