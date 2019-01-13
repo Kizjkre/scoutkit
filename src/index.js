@@ -13,11 +13,17 @@ const { app } = remote;
 const path = app.getPath('appData');
 
 function handleFiles(type) {
- if (type === 'app') {
-   fs.copySync($('.fileload')[0].files[0].path, `${ path }/ScoutKit/data/resources/app.json`);
- } else if (type === 'schedule') {
-   fs.copySync($('.fileload')[0].files[0].path, `${ path }/ScoutKit/data/resources/schedule.json`);
- }
+  switch (type) {
+    case 'app':
+      fs.copySync($('.fileload')[0].files[0].path, `${ path }/ScoutKit/data/resources/app.json`);
+      break;
+    case 'schedule':
+      fs.copySync($('.fileload')[0].files[0].path, `${ path }/ScoutKit/data/resources/schedule.json`);
+      break;
+    case 'scouts':
+      fs.copySync($('.fileload')[0].files[0].path, `${ path }/ScoutKit/data/resources/scouts.json`);
+      break;
+  }
 }
 
 if (!fs.existsSync(`${ path }/ScoutKit/`)) {
@@ -160,6 +166,18 @@ if (!fs.existsSync(`${ path }/ScoutKit/data/resources/app.json`)) {
             <input className="file-path validate" type="text" placeholder="Schedule Upload"  />
           </div>
         </div>
+        <br />
+        <br />
+        <div className="file-field input-field">
+          <div className="btn">
+            <span>File</span>
+            <input className="fileload" type="file" onChange={ () => handleFiles('scouts') } />
+          </div>
+          <div className="file-path-wrapper">
+            <input className="file-path validate" type="text" placeholder="Scouts Upload"  />
+          </div>
+        </div>
+        <br />
       </form>
       <br/>
       <a className="waves-effect waves-light btn" onClick={ () => window.location.reload() }>Reload</a>
