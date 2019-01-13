@@ -49,6 +49,8 @@ export default class App extends React.Component {
           } else {
             M.toast({ html: 'Last Match!' });
           }
+        } else {
+          window.location.reload();
         }
         break;
       case 'next':
