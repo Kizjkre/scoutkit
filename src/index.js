@@ -10,18 +10,50 @@ window.$ = $;
 const fs = window.require('fs-extra');
 const { remote }  =  window.require('electron');
 const { app } = remote;
+const home = app.getPath('home');
 const path = app.getPath('appData');
+
+function validateJSON(path) {
+  try {
+      let json = fs.readFileSync(path);
+      JSON.parse(json);
+  } catch (e) {
+      alert("Invalid JSON file loaded. Please load a new file.", function() {
+        return false;
+      });
+  }
+  return true;
+}
 
 function handleFiles(type) {
   switch (type) {
     case 'app':
-      fs.copySync($('.fileload')[0].files[0].path, `${ path }/ScoutKit/data/resources/app.json`);
+      let app_path = $('.fileload')[0].files[0].path;
+      if (!validateJSON(app_path)) { break; };
+      fs.copySync(app_path, `${ path }/ScoutKit/data/resources/app.json`);
       break;
     case 'schedule':
-      fs.copySync($('.fileload')[0].files[0].path, `${ path }/ScoutKit/data/resources/schedule.json`);
+      let schedule_path = $('.fileload')[1].files[0].path;
+      if (!validateJSON(schedule_path)) { break; };
+      fs.copySync(schedule_path, `${ path }/ScoutKit/data/resources/schedule.json`);
       break;
     case 'scouts':
-      fs.copySync($('.fileload')[0].files[0].path, `${ path }/ScoutKit/data/resources/scouts.json`);
+      let scouts_path = $('.fileload')[2].files[0].path;
+      if (!validateJSON(scouts_path)) { break; };
+      fs.copySync(scouts_path, `${ path }/ScoutKit/data/resources/scouts.json`);
+      break;
+    case 'prevapp':
+      let filepath = $(".fileload")[3].files[0].path;
+      // the following removes the "/app.json from file"
+      let dirpath = filepath.split("/");
+      // removes last element
+      dirpath.splice(-1, 1);
+      // rejoins array
+      dirpath = dirpath.join('/');
+      // validates each file
+      if (!validateJSON(dirpath + "/app.json") || !validateJSON(dirpath + "/schedule.json") || !validateJSON(dirpath + "/scouts.json")) { break; };
+      fs.copySync(dirpath, `${ path }/ScoutKit/data/resources/`);
+      window.location.reload();
       break;
   }
 }
@@ -178,6 +210,12 @@ if (!fs.existsSync(`${ path }/ScoutKit/data/resources/app.json`)) {
           </div>
         </div>
         <br />
+        <div className="load-prev-app file-field input-field">
+          <div className="btn">
+            <span>File</span>
+            <input className="fileload" type="file" onChange={ () => handleFiles('prevapp') } />
+          </div>
+        </div>
       </form>
       <br/>
       <a className="waves-effect waves-light btn" onClick={ () => window.location.reload() }>Reload</a>
@@ -293,10 +331,10 @@ if (!fs.existsSync(`${ path }/ScoutKit/data/resources/app.json`)) {
     let ask = (
       <div id="file" className="modal">
         <div className="modal-content">
-          <h4>Filename</h4>
+          <h4>Team Number</h4>
           <div className="input-field">
             <input id="file-input" type="text" className="validate" />
-            <label htmlFor="file-input">Filename</label>
+            <label htmlFor="file-input">Team</label>
           </div>
         </div>
         <div className="modal-footer">
@@ -312,6 +350,7 @@ if (!fs.existsSync(`${ path }/ScoutKit/data/resources/app.json`)) {
     $('#file-input').keyup(function (event) {
       if (event.keyCode === 13) {
         event.preventDefault();
+        app.team = $(this).val();
         $(this).val($(this).val() + '.json');
         instance.close();
         app.filename = $(this).val();

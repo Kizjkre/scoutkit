@@ -20,7 +20,6 @@ export default class Login extends React.Component {
 
   save() {
     let json = JSON.parse(fs.readFileSync(this.props.file, 'utf8'));
-    console.log(json);
     json[this.props.jsonKey][this.props.name] = this.state.value;
     fs.writeFileSync(this.props.file, JSON.stringify(json));
   }
@@ -35,8 +34,6 @@ export default class Login extends React.Component {
     let scout_id = document.getElementsByClassName('scout-input')[0].value;
     if (Object.keys(scouts).indexOf(scout_id) >= 0) {
       document.getElementsByClassName('scout-name')[0].innerText = 'Welcome, ' +  scouts[scout_id] + ".";
-    } else {
-      console.log(scout_id);
     }
   }
 
