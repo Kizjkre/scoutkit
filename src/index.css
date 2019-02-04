@@ -48,3 +48,8 @@ footer {
 .special-btn-wrap {
   text-align: center;
 }
+.load-prev-app {
+  position: absolute;
+  bottom: 5vh;
+  right: 5vw;
+}

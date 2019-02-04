@@ -9,6 +9,15 @@ const fs = window.require('fs-extra');
 const { remote }  =  window.require('electron');
 const { app } = remote;
 const path = app.getPath('appData');
+const home = app.getPath('home');
+const role = {
+  'r1': 0,
+  'r2': 1,
+  'r3': 2,
+  'b1': 3,
+  'b2': 4,
+  'b3': 5
+};
 
 export default class App extends React.Component {
   constructor(props) {
@@ -24,22 +33,31 @@ export default class App extends React.Component {
   handleClick(target) {
     switch (target) {
       case 'settings':
-        let modal = $('.modal');
+        let modal = $('.setmodal');
         M.Modal.init(modal);
         let instance = M.Modal.getInstance(modal);
         instance.open();
         break;
+      case 'matchnum':
+        let match_modal = $('.matchmodal');
+        M.Modal.init(match_modal);
+        let match_instance = M.Modal.getInstance(match_modal);
+        match_instance.open();
+        break;
+      case 'submitmatch':
+        let new_match = parseInt(document.getElementById("newMatchInput").value);
+        let submit_schedule = JSON.parse(fs.readFileSync(`${ path }/ScoutKit/data/resources/schedule.json`, 'utf8'));
+        if (submit_schedule[new_match] !== undefined && !Number.isNaN(submit_schedule[new_match])) {
+          fs.writeFileSync(
+            `${ path }/ScoutKit/data/${ this.props.app.name.toLowerCase().replace(/[^\w\d]/g, '-') }/resources/info.json`,
+            `{ "match": ${ new_match }, "role": "${ this.info.role }", "team": ${ submit_schedule[new_match][role[this.info.role]] } }`
+          );
+        }
+        window.location.reload();
+        break;
       case 'done':
         if (this.props.app.console) {
           let schedule = JSON.parse(fs.readFileSync(`${ path }/ScoutKit/data/resources/schedule.json`, 'utf8'));
-          let role = {
-            'r1': 0,
-            'r2': 1,
-            'r3': 2,
-            'b1': 3,
-            'b2': 4,
-            'b3': 5
-          };
           if (typeof schedule[this.info.match + 1] === 'object') {
             fs.writeFileSync(
               `${ path }/ScoutKit/data/${ this.props.app.name.toLowerCase().replace(/[^\w\d]/g, '-') }/resources/info.json`,
@@ -70,6 +88,7 @@ export default class App extends React.Component {
         this.position = this.position - 1 < 0 ? this.position : this.position - 1;
         break;
       case 'new':
+        fs.copySync(`${ path }/ScoutKit/data/resources`, `${ home }/Desktop/Scouting/${ this.props.app.name.toLowerCase().replace(/[^\w\d]/g, '-') }/app`);
         fs.unlinkSync(`${ path }/ScoutKit/data/resources/app.json`);
         window.location.reload();
         break;
@@ -78,12 +97,12 @@ export default class App extends React.Component {
         for (let i = 0; i < manifest.length; i++) {
           fs.copySync(
             `${ path }/ScoutKit/data/${ this.props.app.name.toLowerCase().replace(/[^\w\d]/g, '-') }/data/${ manifest[i] }`,
-            `${ this.props.app.export }/${ manifest[i] }`
+            `/Volumes/1540/companal/${ this.props.app.export }/${ manifest[i] }`
           );
         }
         fs.copySync(
           `${ path }/ScoutKit/data/${ this.props.app.name.toLowerCase().replace(/[^\w\d]/g, '-') }/data/manifest.json`,
-          `${ this.props.app.export }/manifest.json`
+          `/Volumes/1540/companal/${ this.props.app.export }/manifest.json`
         );
         break;
     }
@@ -96,7 +115,9 @@ export default class App extends React.Component {
     let console = null;
     let filename = this.props.app.filename === undefined ? `m${ this.info.match }-${ this.info.role }-${ this.info.team }.json` : this.props.app.filename;
     let manifest = [];
-    let json = {};
+    let json = {}
+    if (this.props.app.console) { json = {"info": {"team":this.info.team,"role":this.info.role,"match":this.info.match}}; }
+    else { json = {"info": {"team":this.props.app.team}} }
     document.title = this.props.app.name;
     for (let section in this.props.app.app) {
       if (this.props.app.app.hasOwnProperty(section)) {
@@ -106,7 +127,7 @@ export default class App extends React.Component {
         index++;
       }
     }
-
+    window.console.log(JSON.stringify(json));
     if (!fs.existsSync(`${ path }/ScoutKit/data/${ this.props.app.name.toLowerCase().replace(/[^\w\d]/g, '-') }/data/${ filename }`)) {
       fs.writeFileSync(`${ path }/ScoutKit/data/${ this.props.app.name.toLowerCase().replace(/[^\w\d]/g, '-') }/data/${ filename }`, JSON.stringify(json));
     }
@@ -127,7 +148,7 @@ export default class App extends React.Component {
             </h5>
           </div>
           <div className="col s4">
-            <h5 className="console">
+            <h5 onClick = { () => this.handleClick('matchnum') } className="console">
              Match { this.info.match }&nbsp;&nbsp;&nbsp;
             </h5>
           </div>
@@ -160,7 +181,17 @@ export default class App extends React.Component {
             </div>
           </div>
         </footer>
-        <div id="settings" className="modal">
+        <div id="matchmodal" className="modal matchmodal">
+          <div className="modal-content">
+            <h4>Edit Match Number:</h4>
+            <input id="newMatchInput" type="number" />
+            <button className="btn green" onClick={ () => this.handleClick('submitmatch') }>Submit</button>
+          </div>
+          <div className="modal-footer">
+            <a href="#" className="modal-close waves-effect waves-red btn-flat">×</a>
+          </div>
+        </div>
+        <div id="settings" className="modal setmodal">
           <div className="modal-content">
             <h4>Settings</h4>
             <div className="row">
