@@ -7,7 +7,12 @@ const fs = window.require('fs-extra');
 const { remote }  =  window.require('electron');
 const { app } = remote;
 const path = app.getPath('appData');
-let scouts = JSON.parse(fs.readFileSync(`${ path }/ScoutKit/data/resources/scouts.json`, 'utf8'));
+let scouts;
+try {
+  scouts = JSON.parse(fs.readFileSync(`${ path }/ScoutKit/data/resources/scouts.json`, 'utf8'));
+} catch (e) {
+  scouts = {};
+}
 
 export default class Login extends React.Component {
   constructor(props) {
