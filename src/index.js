@@ -29,17 +29,17 @@ function handleFiles(type) {
   switch (type) {
     case 'app':
       let app_path = $('.fileload')[0].files[0].path;
-      if (!validateJSON(app_path)) { break; };
+      if (!validateJSON(app_path)) { break; }
       fs.copySync(app_path, `${ path }/ScoutKit/data/resources/app.json`);
       break;
     case 'schedule':
       let schedule_path = $('.fileload')[1].files[0].path;
-      if (!validateJSON(schedule_path)) { break; };
+      if (!validateJSON(schedule_path)) { break; }
       fs.copySync(schedule_path, `${ path }/ScoutKit/data/resources/schedule.json`);
       break;
     case 'scouts':
       let scouts_path = $('.fileload')[2].files[0].path;
-      if (!validateJSON(scouts_path)) { break; };
+      if (!validateJSON(scouts_path)) { break; }
       fs.copySync(scouts_path, `${ path }/ScoutKit/data/resources/scouts.json`);
       break;
     case 'prevapp':
