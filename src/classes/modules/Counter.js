@@ -4,6 +4,7 @@ import '../../../node_modules/materialize-css/dist/css/materialize.min.css';
 import '../../../node_modules/materialize-css/dist/js/materialize.min';
 const fs = window.require('fs-extra');
 
+
 export default class Checkbox extends React.Component {
   constructor(props) {
     super(props);
@@ -30,14 +31,13 @@ export default class Checkbox extends React.Component {
     }
   }
 
+
   render() {
     return (
       <div>
-        <input className="special-input" value={ this.state.value } readOnly />
-        <br />
         <div className="special-btn-wrap">
           <button className="btn waves-effect waves-light red" onClick={ () => this.handleClick(false) }>-{ this.props.option.increment }</button>
-          <span>&nbsp;&nbsp;&nbsp;</span>
+          <span style = { {margin: 20} } className="special-input" readOnly >{ this.state.value }</span>
           <button className="btn waves-effect waves-light green" onClick={ () => this.handleClick(true) }>+{ this.props.option.increment }</button>
         </div>
       </div>

@@ -9,6 +9,7 @@ import Input from './modules/Input';
 import Login from './modules/Login';
 import Stopwatch from './modules/Stopwatch';
 import Textarea from './modules/Textarea';
+import YesNo from './modules/YesNo';
 
 
 export default class Module extends React.Component {
@@ -32,6 +33,9 @@ export default class Module extends React.Component {
         break;
       case 'login':
         module = <Login name={ this.props.name } option={ option } file={ this.props.file } jsonKey={ this.props.jsonKey} />;
+        break;
+      case 'yesno':
+        module = <YesNo name={ this.props.name } option={ option } file={ this.props.file } jsonKey={ this.props.jsonKey} />;
         break;
       case 'radio':
         module = <Radio name={ this.props.name } option={ option } file={ this.props.file } jsonKey={ this.props.jsonKey } />;
