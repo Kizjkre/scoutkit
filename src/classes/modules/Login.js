@@ -25,6 +25,9 @@ export default class Login extends React.Component {
 
   save() {
     let json = JSON.parse(fs.readFileSync(this.props.file, 'utf8'));
+    if (json[this.props.jsonKey] === undefined) {
+      json[this.props.jsonKey] = {}
+    }
     json[this.props.jsonKey][this.props.name] = this.state.value;
     fs.writeFileSync(this.props.file, JSON.stringify(json));
   }
