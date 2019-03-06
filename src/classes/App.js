@@ -11,7 +11,7 @@ const { app } = remote;
 const path = app.getPath('appData');
 const home = app.getPath('home');
 let wayToFlash = "/Volumes/1540";
-if (window.navigator.platform == "Win32") { wayToFlash = "D:/1540"; }
+if (window.navigator.platform == "Win32") { wayToFlash = "D:/"; }
 const role = {
   'r1': 0,
   'r2': 1,
