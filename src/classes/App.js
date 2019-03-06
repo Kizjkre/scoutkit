@@ -10,6 +10,8 @@ const { remote }  =  window.require('electron');
 const { app } = remote;
 const path = app.getPath('appData');
 const home = app.getPath('home');
+let wayToFlash = "/Volumes/1540";
+if (window.navigator.platform == "Win32") { wayToFlash = "D:/1540"; }
 const role = {
   'r1': 0,
   'r2': 1,
@@ -97,12 +99,12 @@ export default class App extends React.Component {
         for (let i = 0; i < manifest.length; i++) {
           fs.copySync(
             `${ path }/ScoutKit/data/${ this.props.app.name.toLowerCase().replace(/[^\w\d]/g, '-') }/data/${ manifest[i] }`,
-            `/Volumes/1540/companal/${ this.props.app.export }/${ manifest[i] }`
+            `${ wayToFlash }/companal/${ this.props.app.export }/${ manifest[i] }`
           );
         }
         fs.copySync(
           `${ path }/ScoutKit/data/${ this.props.app.name.toLowerCase().replace(/[^\w\d]/g, '-') }/data/manifest.json`,
-          `/Volumes/1540/companal/${ this.props.app.export }/manifest.json`
+          `${ wayToFlash }/companal/${ this.props.app.export }/manifest.json`
         );
         break;
     }
