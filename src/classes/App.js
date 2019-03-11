@@ -32,6 +32,13 @@ export default class App extends React.Component {
     };
   }
 
+  changeRole() {
+    let schedule = JSON.parse(fs.readFileSync(`${ path }/ScoutKit/data/resources/schedule.json`, 'utf8'));
+    let newRole = window.prompt('New role:', this.info.role);
+    let newInfo = { role: newRole, match: this.info.match, team: schedule[this.info.match][role[this.info.role]] };
+    fs.writeFileSync(`${ path }/ScoutKit/data/${ this.props.app.name.toLowerCase().replace(/[^\w\d]/g, '-') }/resources/info.json`, JSOn.stringify(newInfo));
+  }
+
   handleClick(target) {
     switch (target) {
       case 'settings':
@@ -117,7 +124,7 @@ export default class App extends React.Component {
     let console = null;
     let filename = this.props.app.filename === undefined ? `m${ this.info.match }-${ this.info.role }-${ this.info.team }.json` : this.props.app.filename;
     let manifest = [];
-    let json = {}
+    let json = {};
     if (this.props.app.console) { json = {"info": {"team":this.info.team,"role":this.info.role,"match":this.info.match}}; }
     else { json = {"info": {"team":this.props.app.team}} }
     document.title = this.props.app.name;
@@ -144,7 +151,7 @@ export default class App extends React.Component {
     if (this.props.app.console) {
       console = (
         <div className="row">
-          <div className="col s4">
+          <div className="col s4" onClick={ () => this.changeRole() }>
             <h5 className="console">
               { this.info.role.includes('r') ? `Red ${ this.info.role.substring(1) }` : `Blue ${ this.info.role.substring(1) }` }&nbsp;&nbsp;&nbsp;
             </h5>
