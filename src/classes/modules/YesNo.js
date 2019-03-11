@@ -16,24 +16,22 @@ export default class YesNo extends React.Component {
   }
 
   render() {
-    let jsx = [];
-    jsx.push(<div key="br" style={{lineHeight:0.8}}><br/></div>)
-    jsx.push(
-      <span style = {{margin:10}} key="yes">
-        <label>
-          <input className="with-gap" type="radio" name="yes" onClick={( ) => this.handleClick("yes") } />
-          <span>yes</span>
-        </label>
-      </span>
+    return (
+      <div>
+        <div key="br" style={{lineHeight:0.8}}><br/></div>
+        <span style = {{margin:10}} key="yes">
+          <label>
+            <input className="with-gap" type="radio" name="yes" onClick={( ) => this.handleClick("yes") } />
+           <span>yes</span>
+          </label>
+        </span>
+        <span style = {{margin:20}} key="no">
+          <label>
+            <input className="with-gap" type="radio" name="no" onClick={( ) => this.handleClick("no") } />
+            <span>no</span>
+          </label>
+        </span>
+      </div>
     );
-    jsx.push(
-      <span style = {{margin:20}} key="no">
-        <label>
-          <input className="with-gap" type="radio" name="no" onClick={( ) => this.handleClick("no") } />
-          <span>no</span>
-        </label>
-      </span>
-    );
-    return jsx;
   }
 };
