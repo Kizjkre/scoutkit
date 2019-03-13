@@ -36,7 +36,7 @@ export default class App extends React.Component {
     let schedule = JSON.parse(fs.readFileSync(`${ path }/ScoutKit/data/resources/schedule.json`, 'utf8'));
     let newRole = window.prompt('New role:', this.info.role);
     let newInfo = { role: newRole, match: this.info.match, team: schedule[this.info.match][role[this.info.role]] };
-    fs.writeFileSync(`${ path }/ScoutKit/data/${ this.props.app.name.toLowerCase().replace(/[^\w\d]/g, '-') }/resources/info.json`, JSOn.stringify(newInfo));
+    fs.writeFileSync(`${ path }/ScoutKit/data/${ this.props.app.name.toLowerCase().replace(/[^\w\d]/g, '-') }/resources/info.json`, JSON.stringify(newInfo));
   }
 
   handleClick(target) {
