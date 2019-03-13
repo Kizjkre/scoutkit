@@ -103,12 +103,15 @@ export default class App extends React.Component {
         break;
       case 'export':
         let manifest = JSON.parse(fs.readFileSync(`${ path }/ScoutKit/data/${ this.props.app.name.toLowerCase().replace(/[^\w\d]/g, '-') }/data/manifest.json`));
+        let flashManifest = JSON.parse(fs.readFileSync(`${ wayToFlash }/companal/${ this.props.app.export }/manifest.json`));
         for (let i = 0; i < manifest.length; i++) {
           fs.copySync(
             `${ path }/ScoutKit/data/${ this.props.app.name.toLowerCase().replace(/[^\w\d]/g, '-') }/data/${ manifest[i] }`,
             `${ wayToFlash }/companal/${ this.props.app.export }/${ manifest[i] }`
           );
         }
+        manifest = manifest.concat(flashManifest);
+        manifest = manifest.filter(function(item, pos) { return manifest.indexOf(item) == pos; });
         fs.copySync(
           `${ path }/ScoutKit/data/${ this.props.app.name.toLowerCase().replace(/[^\w\d]/g, '-') }/data/manifest.json`,
           `${ wayToFlash }/companal/${ this.props.app.export }/manifest.json`
