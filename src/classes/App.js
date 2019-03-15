@@ -32,13 +32,6 @@ export default class App extends React.Component {
     };
   }
 
-  changeRole() {
-    let schedule = JSON.parse(fs.readFileSync(`${ path }/ScoutKit/data/resources/schedule.json`, 'utf8'));
-    let newRole = window.prompt('New role:', this.info.role);
-    let newInfo = { role: newRole, match: this.info.match, team: schedule[this.info.match][role[this.info.role]] };
-    fs.writeFileSync(`${ path }/ScoutKit/data/${ this.props.app.name.toLowerCase().replace(/[^\w\d]/g, '-') }/resources/info.json`, JSON.stringify(newInfo));
-  }
-
   handleClick(target) {
     switch (target) {
       case 'settings':
@@ -53,6 +46,12 @@ export default class App extends React.Component {
         let match_instance = M.Modal.getInstance(match_modal);
         match_instance.open();
         break;
+      case 'preparerole':
+        let role_modal = $('.rolemodal');
+        M.Modal.init(role_modal);
+        let role_instance = M.Modal.getInstance(role_modal);
+        role_instance.open();
+        break;
       case 'submitmatch':
         let new_match = parseInt(document.getElementById("newMatchInput").value);
         let submit_schedule = JSON.parse(fs.readFileSync(`${ path }/ScoutKit/data/resources/schedule.json`, 'utf8'));
@@ -60,6 +59,17 @@ export default class App extends React.Component {
           fs.writeFileSync(
             `${ path }/ScoutKit/data/${ this.props.app.name.toLowerCase().replace(/[^\w\d]/g, '-') }/resources/info.json`,
             `{ "match": ${ new_match }, "role": "${ this.info.role }", "team": ${ submit_schedule[new_match][role[this.info.role]] } }`
+          );
+        }
+        window.location.reload();
+        break;
+      case 'submitrole':
+        let new_role = document.getElementById("newRoleInput").value;
+        let role_schedule = JSON.parse(fs.readFileSync(`${ path }/ScoutKit/data/resources/schedule.json`, 'utf8'));
+        if (role[new_role] !== undefined) {
+          fs.writeFileSync(
+            `${ path }/ScoutKit/data/${ this.props.app.name.toLowerCase().replace(/[^\w\d]/g, '-') }/resources/info.json`,
+            `{ "match": ${ this.info.match }, "role": "${ new_role }", "team": ${ role_schedule[this.info.match][role[new_role]] } }`
           );
         }
         window.location.reload();
@@ -110,11 +120,14 @@ export default class App extends React.Component {
             `${ wayToFlash }/companal/${ this.props.app.export }/${ manifest[i] }`
           );
         }
+        console.log(manifest);
+        console.log(flashManifest);
         manifest = manifest.concat(flashManifest);
         manifest = manifest.filter(function(item, pos) { return manifest.indexOf(item) == pos; });
-        fs.copySync(
-          `${ path }/ScoutKit/data/${ this.props.app.name.toLowerCase().replace(/[^\w\d]/g, '-') }/data/manifest.json`,
-          `${ wayToFlash }/companal/${ this.props.app.export }/manifest.json`
+
+        fs.writeFileSync(
+          `${ wayToFlash }/companal/${ this.props.app.export }/manifest.json`,
+          JSON.stringify(manifest)
         );
         break;
     }
@@ -154,7 +167,7 @@ export default class App extends React.Component {
     if (this.props.app.console) {
       console = (
         <div className="row">
-          <div className="col s4" onClick={ () => this.changeRole() }>
+          <div className="col s4" onClick = { () => this.handleClick('preparerole') }>
             <h5 className="console">
               { this.info.role.includes('r') ? `Red ${ this.info.role.substring(1) }` : `Blue ${ this.info.role.substring(1) }` }&nbsp;&nbsp;&nbsp;
             </h5>
@@ -198,6 +211,16 @@ export default class App extends React.Component {
             <h4>Edit Match Number:</h4>
             <input id="newMatchInput" type="number" />
             <button className="btn green" onClick={ () => this.handleClick('submitmatch') }>Submit</button>
+          </div>
+          <div className="modal-footer">
+            <a href="#" className="modal-close waves-effect waves-red btn-flat">×</a>
+          </div>
+        </div>
+        <div id="rolemodal" className="modal rolemodal">
+          <div className="modal-content">
+            <h4>Edit Role:</h4>
+            <input id="newRoleInput" />
+            <button className="btn green" onClick={ () => this.handleClick('submitrole') }>Submit</button>
           </div>
           <div className="modal-footer">
             <a href="#" className="modal-close waves-effect waves-red btn-flat">×</a>
