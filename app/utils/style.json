@@ -1,0 +1,11 @@
+{
+  "main": {
+    "alignItems": "center",
+      "display": "flex",
+      "height": "100vh",
+      "justifyContent": "center",
+      "margin": 0,
+      "overflow": "hidden",
+      "width": "100vw"
+  }
+}
