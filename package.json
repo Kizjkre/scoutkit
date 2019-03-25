@@ -36,11 +36,11 @@
     "test-watch": "yarn test --watch"
   },
   "lint-staged": {
-    "*.{js,jsx}": [
+    "_comment: *.{js,jsx}": [
       "cross-env NODE_ENV=development eslint --cache --format=pretty",
       "git add"
     ],
-    "{*.json,.{babelrc,eslintrc,prettierrc,stylelintrc}}": [
+    "_comment: {*.json,.{babelrc,eslintrc,prettierrc,stylelintrc}}": [
       "prettier --ignore-path .eslintignore --parser json --write",
       "git add"
     ],
