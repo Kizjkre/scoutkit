@@ -1,12 +1,14 @@
 import React from 'react';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import CssBaseline from '@material-ui/core/CssBaseline';
 import { withStyles } from '@material-ui/core/styles';
+import Body from './index/Body';
 import style from './style';
 
 function App(props) {
 	return (
     <div className={ props.classes.main }>
-      <CircularProgress color='secondary' />
+      <CssBaseline />
+      <Body />
     </div>
   );
 }
