@@ -1,4 +1,12 @@
 {
+  "appBar": {
+    "top": "auto",
+    "bottom": 0
+  },
+  "btnHelp": {
+    "position": "absolute",
+    "right": "5vw"
+  },
   "main": {
     "alignItems": "center",
       "display": "flex",
@@ -7,5 +15,17 @@
       "margin": 0,
       "overflow": "hidden",
       "width": "100vw"
+  },
+  "navFabButton": {
+    "position": "absolute",
+    "left": 0,
+    "margin": "0 auto",
+    "right": 0,
+    "top": -30,
+    "zIndex": 1
+  },
+  "navToolbar": {
+    "alignItems": "center",
+    "justifyContent": "space-between"
   }
 }
