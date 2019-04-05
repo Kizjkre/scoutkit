@@ -5,9 +5,9 @@ import Fab from '@material-ui/core/Fab';
 import HelpModal from './HelpModal';
 import IconButton from '@material-ui/core/IconButton';
 import Toolbar from '@material-ui/core/Toolbar';
-import style from './../style';
+import style from '../style';
 import { withStyles } from '@material-ui/core/styles';
-import { AddIcon, HelpIcon } from './../Icons';
+import { AddIcon, HelpIcon } from '../Utils';
 
 function NavBar(props) {
   let [openAddApp, setOpenAddApp] = useState(false);
