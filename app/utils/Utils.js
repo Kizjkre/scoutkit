@@ -5,6 +5,10 @@ import {
   CloudUpload,
   Help
 } from '@material-ui/icons';
+import { remote } from 'electron';
+
+const { app } = remote;
+export const dataPath = `${ app.getPath('appData') }/ScoutKit/data`;
 
 export function AddIcon() {
 	return <Add />;
