@@ -7,6 +7,12 @@
     "position": "absolute",
     "right": "5vw"
   },
+  "createApp": {
+    "background": "white",
+    "height": "100vh",
+    "position": "absolute",
+    "width": "100vw"
+  },
   "main": {
     "alignItems": "center",
       "display": "flex",
