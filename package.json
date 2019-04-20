@@ -56,8 +56,8 @@
   },
   "main": "./app/main.prod.js",
   "build": {
-    "productName": "ElectronReact",
-    "appId": "org.develar.ElectronReact",
+    "productName": "Scoutkit",
+    "appId": "org.theamazingness.Scoutkit",
     "files": [
       "app/dist/",
       "app/app.html",
@@ -100,35 +100,30 @@
     },
     "publish": {
       "provider": "github",
-      "owner": "electron-react-boilerplate",
-      "repo": "electron-react-boilerplate",
+      "owner": "theamazingness",
+      "repo": "scoutkit",
       "private": false
     }
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/electron-react-boilerplate/electron-react-boilerplate.git"
+    "url": "git+https://github.com/TheAmazingness/scoutkit.git"
   },
   "author": {
-    "name": "Electron React Boilerplte Maintainers",
-    "email": "electronreactboilerplate@gmail.com",
-    "url": "https://electron-react-boilerplate.js.org"
+    "name": "Tristan Peng",
+    "email": "pengt@catlin.edu",
+    "url": "https://github.com/theamazingness"
   },
   "contributors": [
     {
-      "name": "Vikram Rangaraj",
-      "email": "vikr01@icloud.com",
-      "url": "https://github.com/vikr01"
-    },
-    {
-      "name": "Amila Welihinda",
-      "email": "amilajack@gmail.com",
-      "url": "https://github.com/amilajack"
+      "name": "FRC 1540 The Flaming Chickens",
+      "email": "robotics@catlin.edu",
+      "url": "https://github.com/flamingchickens1540"
     }
   ],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/electron-react-boilerplate/electron-react-boilerplate/issues"
+    "url": "https://github.com/TheAmazingness/scoutkit/issues"
   },
   "keywords": [
     "electron",
@@ -141,7 +136,7 @@
     "hot",
     "reload"
   ],
-  "homepage": "https://github.com/electron-react-boilerplate/electron-react-boilerplate#readme",
+  "homepage": "https://theamazingness.github.io/scoutkit",
   "jest": {
     "testURL": "http://localhost/",
     "moduleNameMapper": {
