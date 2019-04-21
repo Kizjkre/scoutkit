@@ -1,22 +1,39 @@
 import React from 'react';
-import Body from './index/Body';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import fs from 'fs';
-import style from '../constants/style';
 import { withStyles } from '@material-ui/core/styles';
+import PropTypes from 'prop-types';
+import style from '../constants/style';
+import Body from './index/Body';
 import { dataPath } from '../constants/appData';
 
+Home.defaultProps = {
+  classes: {}
+};
 
+Home.propTypes = {
+  classes: PropTypes.shape
+};
+
+/**
+ * Home component
+ *
+ * Displays the home screen when the app loads
+ */
 function Home(props) {
   init();
-	return (
-    <div className={ props.classes.main }>
+  const { classes } = props;
+  return (
+    <div className={classes.main}>
       <CssBaseline />
       <Body />
     </div>
   );
 }
 
+/**
+ * Checks if the /data and /data/resources folder exists, and creates one if not
+ */
 function init() {
   if (!fs.existsSync(dataPath)) {
     fs.mkdirSync('/data/resources');
