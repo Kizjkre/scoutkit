@@ -8,69 +8,80 @@ import Grid from '@material-ui/core/Grid';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
-import style from '../../../constants/style';
 import { withStyles } from '@material-ui/core';
+import PropTypes from 'prop-types';
+import style from '../../../constants/style';
 import { listApps, dataPath, rmrf } from '../../../constants/appData';
 
-let name = '';
-let apps = listApps();
+DeleteApp.defaultProps = {
+  classes: {},
+  onClose: () => {},
+  open: false
+};
 
+DeleteApp.propTypes = {
+  classes: PropTypes.shape,
+  onClose: PropTypes.func,
+  open: PropTypes.bool
+};
+
+/**
+ * DeleteApp component
+ *
+ * A modal where the user can delete an app
+ * A confirmation modal pops up to confirm delete
+ */
 function DeleteApp(props) {
-  let [openConfirm, setOpenConfirm] = useState(false);
+  const { classes, onClose, open } = props;
+  const [openConfirm, setOpenConfirm] = useState(false);
+  let name = '';
+  let apps = listApps();
   useEffect(() => {
     apps = listApps();
   });
   return (
     <>
-      <Dialog onClose={ props.onClose } open={ props.open }>
+      <Dialog onClose={onClose} open={open}>
         <DialogTitle>Delete Apps</DialogTitle>
-        {
-          apps.names.length ?
-            apps.names.map(n => (
-              <List key={ n }>
-                <ListItem
-                  button
-                  onClick={ () => {
-                    setOpenConfirm(true);
-                    name = event.target.innerText;
-                  } }
-                >
-                  <ListItemText primary={ n } />
-                </ListItem>
-              </List>
-            )) :
-            <DialogContent>
-              <DialogContentText className={ props.classes.center }>
-                No apps
-              </DialogContentText>
-            </DialogContent>
-        }
+        {apps.names.length ? (
+          apps.names.map(n => (
+            <List key={n}>
+              <ListItem
+                button
+                onClick={() => {
+                  setOpenConfirm(true);
+                  name = window.event.target.innerText;
+                }}
+              >
+                <ListItemText primary={n} />
+              </ListItem>
+            </List>
+          ))
+        ) : (
+          <DialogContent>
+            <DialogContentText className={classes.center}>
+              No apps
+            </DialogContentText>
+          </DialogContent>
+        )}
       </Dialog>
-      <Dialog onClose={ () => setOpenConfirm(false) } open={ openConfirm }>
+      <Dialog onClose={() => setOpenConfirm(false)} open={openConfirm}>
         <DialogTitle>Confirm Delete</DialogTitle>
         <DialogContent>
-          <DialogContentText className={ props.classes.center }>
-            Delete { name }?
+          <DialogContentText className={classes.center}>
+            Delete {name}?
           </DialogContentText>
           <br />
-          <Grid className={ props.classes.center } container>
+          <Grid className={classes.center} container>
             <Grid
               item
-              onClick={ () => deleteApp(name, setOpenConfirm, props.onClose) }
-              sm={ 6 }
+              onClick={() => deleteApp(name, apps, setOpenConfirm, onClose)}
+              sm={6}
             >
-              <Button className={ props.classes.fullWidth }>
-                Yes
-              </Button>
+              <Button className={classes.fullWidth}>Yes</Button>
             </Grid>
-            <Grid
-              item
-              onClick={ () => setOpenConfirm(false) }
-              sm={ 6 }
-            >
-              <Button className={ props.classes.fullWidth }>
-                No
-              </Button>
+            <Grid item onClick={() => setOpenConfirm(false)} sm={6}>
+              <Button className={classes.fullWidth}>No</Button>
             </Grid>
           </Grid>
         </DialogContent>
@@ -79,10 +90,17 @@ function DeleteApp(props) {
   );
 }
 
-function deleteApp(name, cb, cb2) {
-  rmrf(`${ dataPath }/${ apps.dir[apps.names.indexOf(name)] }`);
-	cb(false);
-	cb2(false);
+/**
+ * Deletes the app with rm -rf
+ * Two callbacks:
+ * - First one to close the confirmation modal
+ * - Second one to close the delete modal
+ *   (due to a problem where app list wouldn't update)
+ */
+function deleteApp(name, apps, cb, cb2) {
+  rmrf(`${dataPath}/${apps.dir[apps.names.indexOf(name)]}`);
+  cb(false);
+  cb2(false);
 }
 
 export default withStyles(style)(DeleteApp);
