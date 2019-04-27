@@ -25,6 +25,8 @@ DeleteApp.propTypes = {
   open: PropTypes.bool
 };
 
+let name = '';
+
 /**
  * DeleteApp component
  *
@@ -34,7 +36,6 @@ DeleteApp.propTypes = {
 function DeleteApp(props) {
   const { classes, onClose, open } = props;
   const [openConfirm, setOpenConfirm] = useState(false);
-  let name = '';
   let apps = listApps();
   useEffect(() => {
     apps = listApps();
@@ -75,7 +76,7 @@ function DeleteApp(props) {
           <Grid className={classes.center} container>
             <Grid
               item
-              onClick={() => deleteApp(name, apps, setOpenConfirm, onClose)}
+              onClick={() => deleteApp(apps, setOpenConfirm, onClose)}
               sm={6}
             >
               <Button className={classes.fullWidth}>Yes</Button>
@@ -97,7 +98,7 @@ function DeleteApp(props) {
  * - Second one to close the delete modal
  *   (due to a problem where app list wouldn't update)
  */
-function deleteApp(name, apps, cb, cb2) {
+function deleteApp(apps, cb, cb2) {
   rmrf(`${dataPath}/${apps.dir[apps.names.indexOf(name)]}`);
   cb(false);
   cb2(false);
