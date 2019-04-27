@@ -12,7 +12,7 @@ Home.defaultProps = {
 };
 
 Home.propTypes = {
-  classes: PropTypes.shape
+  classes: PropTypes.objectOf(PropTypes.shape)
 };
 
 /**

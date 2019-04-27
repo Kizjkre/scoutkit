@@ -23,7 +23,7 @@ CreateApp.defaultProps = {
 };
 
 CreateApp.propTypes = {
-  classes: PropTypes.shape,
+  classes: PropTypes.objectOf(PropTypes.shape),
   onClose: PropTypes.func,
   open: PropTypes.bool
 };
@@ -53,6 +53,7 @@ function CreateApp(props) {
             <AddIcon />
           </IconButton>
         </Link>
+        <br />
         <br />
         <Divider />
         <br />

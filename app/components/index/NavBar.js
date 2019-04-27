@@ -15,7 +15,7 @@ NavBar.defaultProps = {
 };
 
 NavBar.propTypes = {
-  classes: PropTypes.shape
+  classes: PropTypes.objectOf(PropTypes.shape)
 };
 
 /**

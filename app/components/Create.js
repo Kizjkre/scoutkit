@@ -13,7 +13,7 @@ Create.defaultProps = {
 };
 
 Create.propTypes = {
-  classes: PropTypes.shape
+  classes: PropTypes.objectOf(PropTypes.shape)
 };
 
 /**

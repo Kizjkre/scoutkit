@@ -20,7 +20,7 @@ DeleteApp.defaultProps = {
 };
 
 DeleteApp.propTypes = {
-  classes: PropTypes.shape,
+  classes: PropTypes.objectOf(PropTypes.shape),
   onClose: PropTypes.func,
   open: PropTypes.bool
 };
