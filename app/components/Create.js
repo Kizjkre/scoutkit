@@ -3,7 +3,7 @@ import AppBar from '@material-ui/core/AppBar';
 import IconButton from '@material-ui/core/IconButton';
 import Toolbar from '@material-ui/core/Toolbar';
 import { withStyles } from '@material-ui/core';
-import { Add as BackIcon } from '@material-ui/icons';
+import { ArrowBackIos as ArrowBackIosIcon } from '@material-ui/icons';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import style from '../constants/style';
@@ -33,7 +33,7 @@ function Create(props) {
         <Toolbar className={classes.navToolbar}>
           <Link className={classes.btnNavbar} color="inherit" to="/">
             <IconButton color="inherit">
-              <BackIcon />
+              <ArrowBackIosIcon />
             </IconButton>
           </Link>
         </Toolbar>
@@ -47,7 +47,7 @@ function Create(props) {
  * TODO: fix
  */
 function save() {
-  console.log(window.location.href);
+  console.log('work on this');
   // fs.writeFileSync(`${ dataPath }/${  }`);
 }
 
