@@ -7,7 +7,7 @@ import Create from './components/Create';
 
 export default () => (
   <App>
-    <Route component={ Home } exact path={ routes.HOME } />
-    <Route component={ Create } path={ routes.CREATE } />
+    <Route component={Home} exact path={routes.HOME} />
+    <Route component={Create} path={routes.CREATE} />
   </App>
 );
