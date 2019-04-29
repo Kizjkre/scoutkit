@@ -13,9 +13,9 @@ import {
   Delete as DeleteIcon
 } from '@material-ui/icons';
 import PropTypes from 'prop-types';
-import SwitchApp from './app/SwitchApp';
-import DeleteApp from './app/DeleteApp';
-import CreateApp from './app/CreateApp';
+import SwitchApp from './modals/SwitchApp';
+import DeleteApp from './modals/DeleteApp';
+import CreateApp from './modals/CreateApp';
 
 AppModal.defaultProps = {
   onClose: () => {},
