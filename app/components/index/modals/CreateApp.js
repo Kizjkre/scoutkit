@@ -48,7 +48,7 @@ function CreateApp(props) {
           // onKeyPress={ () => createApp(name, props.onClose) }
           onChange={() => setName(window.event.target.value)}
         />
-        <Link to={`/create?name=${name}`}>
+        <Link to="/create">
           <IconButton color="primary" onClick={() => createApp(name, onClose)}>
             <AddIcon />
           </IconButton>
