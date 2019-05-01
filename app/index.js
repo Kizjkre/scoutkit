@@ -10,7 +10,7 @@ const AppContainer = process.env.PLAIN_HMR ? Fragment : ReactHotAppContainer;
 
 render(
   <AppContainer>
-    <Root store={ store } history={ history }/>
+    <Root store={store} history={history} />
   </AppContainer>,
   document.getElementById('root')
 );
@@ -21,7 +21,7 @@ if (module.hot) {
     const NextRoot = require('./containers/Root').default;
     render(
       <AppContainer>
-        <NextRoot store={ store } history={ history }/>
+        <NextRoot store={store} history={history} />
       </AppContainer>,
       document.getElementById('root')
     );
