@@ -44,11 +44,12 @@ function DeleteApp(props) {
     <>
       <Dialog onClose={onClose} open={open}>
         <DialogTitle>Delete Apps</DialogTitle>
-        {apps.names.length ? (
-          apps.names.map(n => (
-            <List key={n}>
+        <List>
+          {apps.names.length ? (
+            apps.names.map(n => (
               <ListItem
                 button
+                key={n}
                 onClick={() => {
                   setOpenConfirm(true);
                   name = window.event.target.innerText;
@@ -56,15 +57,15 @@ function DeleteApp(props) {
               >
                 <ListItemText primary={n} />
               </ListItem>
-            </List>
-          ))
-        ) : (
-          <DialogContent>
-            <DialogContentText className={classes.center}>
-              No apps
-            </DialogContentText>
-          </DialogContent>
-        )}
+            ))
+          ) : (
+            <DialogContent>
+              <DialogContentText className={classes.center}>
+                No apps
+              </DialogContentText>
+            </DialogContent>
+          )}
+        </List>
       </Dialog>
       <Dialog onClose={() => setOpenConfirm(false)} open={openConfirm}>
         <DialogTitle>Confirm Delete</DialogTitle>
