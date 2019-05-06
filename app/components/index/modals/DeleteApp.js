@@ -8,6 +8,7 @@ import Grid from '@material-ui/core/Grid';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
+import Snackbar from '@material-ui/core/Snackbar';
 import { withStyles } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import style from '../../../constants/style';
@@ -36,6 +37,7 @@ let name = '';
 function DeleteApp(props) {
   const { classes, onClose, open } = props;
   const [openConfirm, setOpenConfirm] = useState(false);
+  const [openSnackbar, setOpenSnackbar] = useState(false);
   let apps = listApps();
   useEffect(() => {
     apps = listApps();
@@ -77,7 +79,13 @@ function DeleteApp(props) {
           <Grid className={classes.center} container>
             <Grid
               item
-              onClick={() => deleteApp(apps, setOpenConfirm, onClose)}
+              onClick={() =>
+                deleteApp(apps, bool => {
+                  setOpenConfirm(bool);
+                  onClose(bool);
+                  setOpenSnackbar(!bool);
+                })
+              }
               sm={6}
             >
               <Button className={classes.fullWidth}>Yes</Button>
@@ -88,21 +96,31 @@ function DeleteApp(props) {
           </Grid>
         </DialogContent>
       </Dialog>
+      <Snackbar
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'left'
+        }}
+        open={openSnackbar}
+        autoHideDuration={3000}
+        onClose={() => setOpenSnackbar(false)}
+        message={`${name} deleted.`}
+      />
     </>
   );
 }
 
 /**
  * Deletes the app with rm -rf
- * Two callbacks:
+ * Three callbacks:
  * - First one to close the confirmation modal
  * - Second one to close the delete modal
  *   (due to a problem where app list wouldn't update)
+ * - Third one to trigger the snackbar
  */
-function deleteApp(apps, cb, cb2) {
+function deleteApp(apps, cb) {
   rmrf(`${dataPath}/${apps.dir[apps.names.indexOf(name)]}`);
   cb(false);
-  cb2(false);
 }
 
 export default withStyles(style)(DeleteApp);
