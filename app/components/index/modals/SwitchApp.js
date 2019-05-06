@@ -9,7 +9,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import { withStyles } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import style from '../../../constants/style';
-import { listApps } from '../../../constants/appData';
+import { listApps } from '../../../constants/constants';
 
 SwitchApp.defaultProps = {
   classes: {},

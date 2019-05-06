@@ -43,3 +43,16 @@ export function rmrf(path) {
     fs.rmdirSync(path);
   }
 }
+
+/**
+ * Formats a directory name from human-readable to computer-readable
+ * Replaces human-readable name with the following rules:
+ * - Lowercase
+ * - Spaces and non-alphanumeric symbols map to '-'
+ */
+export function formatDir(name) {
+  return name
+    .toLowerCase()
+    .replace(/\s+/g, '-')
+    .replace(/[^A-Za-z1-9]+/g, '-');
+}

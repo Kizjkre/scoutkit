@@ -12,7 +12,7 @@ import { Link } from 'react-router-dom';
 import { withStyles } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import style from '../../../constants/style';
-import { listApps, dataPath } from '../../../constants/appData';
+import { listApps, dataPath, formatDir } from '../../../constants/constants';
 
 const apps = listApps();
 
@@ -68,10 +68,7 @@ function CreateApp(props) {
  * Accepts the name, and a callback function to close the modal
  */
 function createApp(name, cb) {
-  const dir = `app-${name
-    .toLowerCase()
-    .replace(/\s+/g, '-')
-    .replace(/[^A-Za-z1-9]+/g, '-')}`;
+  const dir = `app-${formatDir(name)}`;
   if (!apps.dir.includes(dir)) {
     fs.mkdirSync(`${dataPath}/${dir}`);
     fs.writeFileSync(`${dataPath}/${dir}/name.txt`, name);

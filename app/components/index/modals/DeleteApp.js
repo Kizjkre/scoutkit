@@ -11,7 +11,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import { withStyles } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import style from '../../../constants/style';
-import { listApps, dataPath, rmrf } from '../../../constants/appData';
+import { listApps, dataPath, rmrf } from '../../../constants/constants';
 
 DeleteApp.defaultProps = {
   classes: {},

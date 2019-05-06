@@ -5,7 +5,7 @@ import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import style from '../constants/style';
 import Body from './index/Body';
-import { dataPath } from '../constants/appData';
+import { dataPath } from '../constants/constants';
 
 Home.defaultProps = {
   classes: {}
