@@ -11,8 +11,9 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Snackbar from '@material-ui/core/Snackbar';
 import { withStyles } from '@material-ui/core';
 import PropTypes from 'prop-types';
+import rimraf from 'rimraf';
 import style from '../../../constants/style';
-import { listApps, dataPath, rmrf } from '../../../constants/constants';
+import { listApps, dataPath } from '../../../constants/constants';
 
 DeleteApp.defaultProps = {
   classes: {},
@@ -80,10 +81,10 @@ function DeleteApp(props) {
             <Grid
               item
               onClick={() =>
-                deleteApp(apps, bool => {
-                  setOpenConfirm(bool);
-                  onClose(bool);
-                  setOpenSnackbar(!bool);
+                deleteApp(apps, () => {
+                  setOpenConfirm(false);
+                  onClose(false);
+                  setOpenSnackbar(true);
                 })
               }
               sm={6}
@@ -119,8 +120,8 @@ function DeleteApp(props) {
  * - Third one to trigger the snackbar
  */
 function deleteApp(apps, cb) {
-  rmrf(`${dataPath}/${apps.dir[apps.names.indexOf(name)]}`);
-  cb(false);
+  rimraf(`${dataPath}/${apps.dir[apps.names.indexOf(name)]}`, () => {});
+  cb();
 }
 
 export default withStyles(style)(DeleteApp);
