@@ -27,24 +27,6 @@ export function listApps() {
 }
 
 /**
- * rm -rf yeet!
- * Recursively deletes a directory
- */
-export function rmrf(path) {
-  if (fs.existsSync(path)) {
-    fs.readdirSync(path).forEach(file => {
-      const curPath = `${path}/${file}`;
-      if (fs.lstatSync(curPath).isDirectory()) {
-        rmrf(curPath);
-      } else {
-        fs.unlinkSync(curPath);
-      }
-    });
-    fs.rmdirSync(path);
-  }
-}
-
-/**
  * Formats a directory name from human-readable to computer-readable
  * Replaces human-readable name with the following rules:
  * - Lowercase
