@@ -120,8 +120,7 @@ function DeleteApp(props) {
  * - Third one to trigger the snackbar
  */
 function deleteApp(apps, cb) {
-  rimraf(`${dataPath}/${apps.dir[apps.names.indexOf(name)]}`, () => {});
-  cb();
+  rimraf(`${dataPath}/${apps.dir[apps.names.indexOf(name)]}`, () => cb());
 }
 
 export default withStyles(style)(DeleteApp);
