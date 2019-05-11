@@ -33,7 +33,6 @@ CreateApp.propTypes = {
  *
  * A modal where the user can input the app name
  * Can click button or press enter to create app
- * TODO: fix to make it work with react-router, use enter key to create app
  */
 function CreateApp(props) {
   const [name, setName] = useState();
@@ -45,7 +44,6 @@ function CreateApp(props) {
         <TextField
           className={classes.appName}
           label="App Name"
-          // onKeyPress={ () => createApp(name, props.onClose) }
           onChange={() => setName(window.event.target.value)}
         />
         <Link to="/create">
@@ -66,6 +64,7 @@ function CreateApp(props) {
 /**
  * Creates the app
  * Accepts the name, and a callback function to close the modal
+ * Create a directory and name.txt file
  */
 function createApp(name, cb) {
   const dir = `app-${formatDir(name)}`;
@@ -73,6 +72,7 @@ function createApp(name, cb) {
     fs.mkdirSync(`${dataPath}/${dir}`);
     fs.writeFileSync(`${dataPath}/${dir}/name.txt`, name);
     cb(false);
+    document.dispatchEvent(new CustomEvent('create', { detail: name }));
   }
 }
 
