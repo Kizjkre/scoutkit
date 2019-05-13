@@ -6,7 +6,9 @@ import { withStyles } from '@material-ui/core';
 import { ArrowBackIos as ArrowBackIosIcon } from '@material-ui/icons';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import fs from 'fs';
 import style from '../constants/style';
+import { dataPath, formatDir } from '../constants/constants';
 
 Create.defaultProps = {
   classes: {}
@@ -20,12 +22,11 @@ Create.propTypes = {
  * Create component
  *
  * The /create page, for creating a new app
- * Like ./index/NavBar.js, navbar is fixed to the bottom
+ * Navbar is fixed to the bottom
  * - Contains a back button to go back to '/'
- * TODO: get name working, in progress save
  */
 function Create(props) {
-  save();
+  init();
   const { classes } = props;
   return (
     <>
@@ -43,12 +44,21 @@ function Create(props) {
 }
 
 /**
- * Saves the app by create a directory and name.txt file
- * TODO: fix
+ * Reads to check if app already exists
+ * Creates a temporary autosave file
+ * Callback to trigger the snackbar
  */
-function save() {
-  console.log('work on this');
-  // fs.writeFileSync(`${ dataPath }/${  }`);
+function init() {
+  document.addEventListener('create', e => {
+    const path = `${dataPath}/app-${formatDir(e.detail)}/`;
+    const contents = fs.readdirSync(path);
+    if (!contents.includes('autosave.json')) {
+      const data = {
+        name: e.detail
+      };
+      fs.writeFileSync(`${path}autosave.json`, data);
+    }
+  });
 }
 
 export default withStyles(style)(Create);
