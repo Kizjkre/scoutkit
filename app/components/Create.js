@@ -46,7 +46,6 @@ function Create(props) {
 /**
  * Reads to check if app already exists
  * Creates a temporary autosave file
- * Callback to trigger the snackbar
  */
 function init() {
   document.addEventListener('create', e => {
