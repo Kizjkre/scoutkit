@@ -10,7 +10,6 @@ window.$ = $;
 const fs = window.require('fs-extra');
 const { remote }  =  window.require('electron');
 const { app } = remote;
-const home = app.getPath('home');
 const path = app.getPath('appData');
 
 function validateJSON(path) {
@@ -65,6 +64,22 @@ if (!fs.existsSync(`${ path }/ScoutKit/`)) {
 if (!fs.existsSync(`${ path }/ScoutKit/data/`)) {
   fs.mkdirSync(`${ path }/ScoutKit/data/`);
   fs.mkdirSync(`${ path }/ScoutKit/data/resources/`);
+}
+
+if (!fs.existsSync(`${ path }/ScoutKit/data/resources/bluetooth.json`)) {
+  fs.writeFileSync(`${ path }/ScoutKit/data/resources/bluetooth.json`, JSON.stringify({"uuid":"","target_addr":""}))
+}
+
+if (!fs.existsSync(`${ path }/ScoutKit/data/resources/device.txt`)) {
+  // some code from:
+  // https://stackoverflow.com/questions/1349404/generate-random-string-characters-in-javascript
+  let randomId = '';
+  var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  var charactersLength = characters.length;
+  for (let i = 0; i < 11; i++ ) {
+    randomId += characters.charAt(Math.floor(Math.random() * charactersLength));
+  }
+  fs.writeFileSync(`${ path }/ScoutKit/data/resources/device.txt`, randomId);
 }
 
 if (!fs.existsSync(`${ path }/ScoutKit/data/resources/app.json`)) {

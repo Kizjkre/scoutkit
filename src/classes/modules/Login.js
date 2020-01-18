@@ -28,20 +28,23 @@ export default class Login extends React.Component {
     if (json[this.props.jsonKey] === undefined) {
       json[this.props.jsonKey] = {}
     }
+    json["info"]["scout"] = this.state.scout;
+    json["info"]["scout_name"] = this.state.scoutName;
     json[this.props.jsonKey][this.props.name] = this.state.value;
     fs.writeFileSync(this.props.file, JSON.stringify(json));
   }
 
-  handleChange(e) {
-    this.setState({
-      value: e.target.value
-    }, () => this.save());
-  }
+  handleChange(e) { }
 
   handleClick() {
     let scout_id = document.getElementsByClassName('scout-input')[0].value;
     if (Object.keys(scouts).indexOf(scout_id) >= 0) {
       document.getElementsByClassName('scout-name')[0].innerText = 'Welcome, ' +  scouts[scout_id] + ".";
+      this.setState({
+        value: ""+scout_id,
+        scout: scout_id,
+        scoutName: scouts[scout_id]
+      }, () => this.save());
     }
   }
 

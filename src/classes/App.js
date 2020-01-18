@@ -11,7 +11,9 @@ const { app } = remote;
 const path = app.getPath('appData');
 const home = app.getPath('home');
 let wayToFlash = "/Volumes/1540";
-if (window.navigator.platform == "Win32") { wayToFlash = "D:/"; }
+let bluetooth = {}
+
+if (window.navigator.platform === "Win32") { wayToFlash = "D:/"; }
 const role = {
   'r1': 0,
   'r2': 1,
@@ -76,6 +78,11 @@ export default class App extends React.Component {
         break;
       case 'done':
         if (this.props.app.console) {
+          // setting new time
+          let filename = this.props.app.filename === undefined ? `m${ this.info.match }-${ this.info.role }-${ this.info.team }.json` : this.props.app.filename;
+          let json = JSON.parse(fs.readFileSync(`${ path }/ScoutKit/data/${ this.props.app.name.toLowerCase().replace(/[^\w\d]/g, '-') }/data/${ filename }`));
+          json["info"]["time"] = new Date().getTime();
+          fs.writeFileSync(`${ path }/ScoutKit/data/${ this.props.app.name.toLowerCase().replace(/[^\w\d]/g, '-') }/data/${ filename }`, JSON.stringify(json));
           let schedule = JSON.parse(fs.readFileSync(`${ path }/ScoutKit/data/resources/schedule.json`, 'utf8'));
           if (typeof schedule[this.info.match + 1] === 'object') {
             fs.writeFileSync(
@@ -111,7 +118,7 @@ export default class App extends React.Component {
         fs.unlinkSync(`${ path }/ScoutKit/data/resources/app.json`);
         window.location.reload();
         break;
-      case 'export':
+      case 'flash':
         let manifest = JSON.parse(fs.readFileSync(`${ path }/ScoutKit/data/${ this.props.app.name.toLowerCase().replace(/[^\w\d]/g, '-') }/data/manifest.json`));
         let flashManifest = JSON.parse(fs.readFileSync(`${ wayToFlash }/companal/${ this.props.app.export }/manifest.json`));
         for (let i = 0; i < manifest.length; i++) {
@@ -123,12 +130,29 @@ export default class App extends React.Component {
         console.log(manifest);
         console.log(flashManifest);
         manifest = manifest.concat(flashManifest);
-        manifest = manifest.filter(function(item, pos) { return manifest.indexOf(item) == pos; });
+        manifest = manifest.filter(function(item, pos) { return manifest.indexOf(item) === pos; });
 
         fs.writeFileSync(
           `${ wayToFlash }/companal/${ this.props.app.export }/manifest.json`,
           JSON.stringify(manifest)
         );
+        break;
+      case 'bluetoothmodal':
+        if (fs.existsSync(`${ path }/ScoutKit/data/resources/bluetooth.json`)) {
+          let bluetooth_modal = $('.bluetoothmodal');
+          M.Modal.init(bluetooth_modal);
+          let bt_instance = M.Modal.getInstance(bluetooth_modal);
+          bt_instance.open();
+          bluetooth = JSON.parse(fs.readFileSync(`${ path }/ScoutKit/data/resources/bluetooth.json`));
+          $("#newUuidInput").val(bluetooth["uuid"]);
+          $("#newAddrInput").val(bluetooth["target_addr"]);
+          $("#addresslist").text(bluetooth["possible_addrs"].join(", "));
+        }
+        break;
+      case 'bluetooth':
+        bluetooth["uuid"] = $("#newUuidInput").val();
+        bluetooth["target_addr"] = $("#newAddrInput").val();
+        fs.writeFileSync(`${ path }/ScoutKit/data/resources/bluetooth.json`, JSON.stringify(bluetooth));
         break;
     }
     $('html, body').animate({ scrollTop: (this.position * $(window).height()) });
@@ -140,9 +164,17 @@ export default class App extends React.Component {
     let console = null;
     let filename = this.props.app.filename === undefined ? `m${ this.info.match }-${ this.info.role }-${ this.info.team }.json` : this.props.app.filename;
     let manifest = [];
-    let json = {};
-    if (this.props.app.console) { json = {"info": {"team":this.info.team,"role":this.info.role,"match":this.info.match}}; }
-    else { json = {"info": {"team":this.props.app.team}} }
+    let device = fs.readFileSync(`${ path }/ScoutKit/data/resources/device.txt`).toString();
+    let time = new Date().getTime();
+    let json = { "info": {} };
+    json["info"]["type"] = filename[0] == "m" ? "stand":"pit";
+    json["info"]["team"] = this.info.team;
+    json["info"]["device"] = "" + device;
+    json["info"]["filename"] = filename;
+    if (this.props.app.console) {
+      json["info"]["role"] = this.info.role;
+      json["info"]["match"] = this.info.match;
+    }
     document.title = this.props.app.name;
     for (let section in this.props.app.app) {
       if (this.props.app.app.hasOwnProperty(section)) {
@@ -226,23 +258,52 @@ export default class App extends React.Component {
             <a href="#" className="modal-close waves-effect waves-red btn-flat">×</a>
           </div>
         </div>
+        <div id="settings" className="modal bluetoothmodal">
+          <div className="modal-content">
+            <h4>Bluetooth</h4>
+            <div className="modal-content">
+              <h4>UUID:</h4>
+              <input id="newUuidInput" />
+            </div>
+            <div className="modal-content">
+              <h4>Target Address:</h4>
+              <input id="newAddrInput" />
+            </div>
+            <br/>
+            <p>Available Addresses:</p>
+            <p id="addresslist">Address 1, Address 2, Address 3</p>
+            <br/>
+            <button className="btn blue" onClick={ () => this.handleClick('bluetooth') }>Submit</button>
+            <div className="modal-footer">
+              <a href="#" className="modal-close waves-effect waves-red btn-flat">×</a>
+            </div>
+          </div>
+        </div>
         <div id="settings" className="modal setmodal">
           <div className="modal-content">
             <h4>Settings</h4>
             <div className="row">
-              <div className="col s6">
+              <div className="col s4">
                 <div className="card teal lighten-4">
                   <div className="card-content">
-                    <h5>Export Data</h5>
-                    <button className="btn waves-effect waves-light" onClick={ () => this.handleClick('export') }>Export</button>
+                    <h5>Flashdrive</h5>
+                    <button className="btn waves-effect waves-light" onClick={ () => this.handleClick('flash') }>Export</button>
                   </div>
                 </div>
               </div>
-              <div className="col s6">
+              <div className="col s4">
                 <div className="card teal lighten-4">
                   <div className="card-content">
                     <h5>Load New App</h5>
                     <button className="btn waves-effect waves-light" onClick={ () => this.handleClick('new') }>+ New</button>
+                  </div>
+                </div>
+              </div>
+              <div className="col s4">
+                <div className="card teal lighten-4">
+                  <div className="card-content">
+                    <h5>Bluetooth (New)</h5>
+                    <button className="btn waves-effect waves-light" onClick={ () => this.handleClick('bluetoothmodal') }>Edit</button>
                   </div>
                 </div>
               </div>
