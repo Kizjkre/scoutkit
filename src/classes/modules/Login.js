@@ -48,14 +48,19 @@ export default class Login extends React.Component {
     }
   }
 
+  onFormSubmit = e => {
+    e.preventDefault();
+    this.handleClick();
+  }
+
   render() {
     return (
-      <div className="input-field">
+      <form onSubmit = { this.onFormSubmit } className="input-field">
         <input className="scout-input" id={ this.props.name.toLowerCase().replace(/[^\w\d]/g, '-') } type="text" onChange={ this.handleChange } />
         <label htmlFor={ this.props.name.toLowerCase().replace(/[^\w\d]/g, '-') }>{ this.props.option.placeholder }</label>
-        <button className="btn waves-effect waves-light green" onClick={ () => this.handleClick() }>Submit</button>
+        <button type='submit' className="btn waves-effect waves-light green" onClick={ () => this.handleClick() }>Submit</button>
         <h3 className="scout-name"></h3>
-      </div>
+      </form>
     );
   }
 };
