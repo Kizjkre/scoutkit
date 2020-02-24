@@ -168,12 +168,14 @@ export default class App extends React.Component {
     let time = new Date().getTime();
     let json = { "info": {} };
     json["info"]["type"] = filename[0] == "m" ? "stand":"pit";
-    json["info"]["team"] = this.info.team;
     json["info"]["device"] = "" + device;
     json["info"]["filename"] = filename;
     if (this.props.app.console) {
       json["info"]["role"] = this.info.role;
       json["info"]["match"] = this.info.match;
+      json["info"]["team"] = this.info.team;
+    } else {
+      json["info"]["team"] = this.props.app.team;
     }
     document.title = this.props.app.name;
     for (let section in this.props.app.app) {
