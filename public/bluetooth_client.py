@@ -14,7 +14,6 @@ if os.name == "posix":
     path = os.path.expanduser("~")+"/Library/Application Support/ScoutKit/data/"
 elif os.name == "nt":
     path = os.path.expanduser("~")+"/AppData/Roaming/ScoutKit/data/"
-
 def set_interval(func, sec):
     def func_wrapper():
         set_interval(func, sec)
@@ -24,20 +23,23 @@ def set_interval(func, sec):
     return t
 
 def check_for_addrs():
-    nearby_devices = bluetooth.discover_devices(lookup_names=True)
-    file = open(path + "resources/bluetooth.json", "r+")
-    data = json.loads(file.read())
-    data["possible_addrs"] = nearby_devices
-    file.seek(0)
-    file.write(json.dumps(data))
-    file.truncate()
-    file.close()
+	try:
+		nearby_devices = bluetooth.discover_devices(lookup_names=True)
+		file = open(path + "resources/bluetooth.json", "r+")
+		data = json.loads(file.read())
+		data["possible_addrs"] = nearby_devices
+		file.seek(0)
+		file.write(json.dumps(data))
+		file.truncate()
+		file.close()
+	except OSError:
+		pass
 
 set_interval(check_for_addrs, 60)
 
 class NewEventHandler(FileSystemEventHandler):
     def on_any_event(self,event):
-        if event.event_type == "modified" or event.event_type == "created":
+        if (event.event_type == "modified" or event.event_type == "created") and not os.path.isdir(event.src_path):
             file = open(event.src_path, "r")
             message = file.read()
             if not len(message) == 0 and message[0] == "{" and "info" in json.loads(message):
@@ -52,12 +54,15 @@ class NewEventHandler(FileSystemEventHandler):
 
                 service_matches = bluetooth.find_service(address=addr, uuid=uuid)
 
-                if len(service_matches) == 0:
-                    addr = None
-                    service_matches = bluetooth.find_service(uuid=uuid, address=addr)
+                go_on = False
+                while not go_on:
                     if len(service_matches) == 0:
-                        raise ValueError('Server not found! Make sure address and uuid of the server match, and that the server is running!')
-
+                        addr = None
+                        service_matches = bluetooth.find_service(uuid=uuid, address=addr)
+                        if len(service_matches) == 0:
+                            time.sleep(.5)
+                            continue
+                    go_on = True
                 first_match = service_matches[0]
                 port = first_match["port"]
                 host = first_match["host"]
